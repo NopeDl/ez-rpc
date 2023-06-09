@@ -1,8 +1,12 @@
 package com.yeyeye.client.proxy;
 
+import cn.hutool.http.HttpUtil;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author yeyeye
@@ -14,7 +18,9 @@ public class ServiceInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        System.out.println("【" + proxy.getClass() + "】执行了远程调用方法：" + method + "【参数】：" + Arrays.toString(args));
-        return null;
+        //指定URL
+        String url = "http://localhost:8888/" + method.getName();
+        //发送get请求并接收响应数据
+        return HttpUtil.createGet(url).execute().body();
     }
 }
